@@ -1,0 +1,19 @@
+- name: My first play
+  hosts: all
+  vars:
+    my_packages:
+    - {package_name: "nginx", version: "present"}
+    - {package_name: "mariadb-server", version: "present"}
+    - {package_name: "curl", version: "present"}
+
+  tasks:
+
+  - name: update_cache
+    apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+  - name: Install nginx
+    ansible.builtin.apt:
+      name: "{{item.package_name}}"  
+      state: "{{item.version}}"
+    loop:
+      "{{my_packages}}"

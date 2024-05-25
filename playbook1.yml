@@ -1,0 +1,28 @@
+
+- name: My first play
+  hosts: all
+  tasks:
+
+  - name: update_cache
+    apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+
+  - name: Install nginx
+    apt:
+      name: nginx
+      state: latest
+
+  - name: Start service nginx
+    sysvinit:
+      name: nginx
+      state: started
+
+  - name: Copy html file of nginx
+    copy:
+      src: ./index.html
+      dest: /var/www/html/
+
+  - name: Start service nginx
+    sysvinit:
+      name: nginx
+      state: restarted      

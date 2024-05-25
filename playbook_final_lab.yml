@@ -1,0 +1,35 @@
+- name: My first play
+  hosts: all
+
+  vars_files:
+  - ./my_vars.yml
+  
+  tasks:
+
+  - name: Install nginx
+    apt:
+      name: "{{package}}"
+      state: "{{version}}"
+    notify: my_handler
+    changed_when: true
+  - name:  
+    template:
+      src: ./index.html.j2
+      dest: /var/www/html/index.html
+
+  handlers:
+  - name: my_handler
+    copy:
+      src: "{{item}}"
+      
+      dest: /var/www/html/
+    loop:
+      "{{all_sources}}"
+
+    notify: my_handler2
+    changed_when: true
+  
+  - name: my_handler2
+    sysvinit:
+      name: "{{package}}"
+      state: restarted

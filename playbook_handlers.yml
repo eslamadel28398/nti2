@@ -1,0 +1,23 @@
+- name: play_handler
+  hosts: all
+  tasks:
+  
+  - name: task1_with_handler
+    apt:
+      name: nginx
+    notify: my_handler
+    changed_when: true
+  
+  - name: run_nw
+    meta: flush_handlers
+
+  - name: intermdiate_run
+    apt:
+      name: curl
+
+  handlers:
+
+  - name: my_handler
+    sysvinit:
+      name: nginx
+      state: restarted

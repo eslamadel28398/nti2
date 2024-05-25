@@ -1,0 +1,29 @@
+- name: My first play
+  hosts: all
+  tasks:
+
+
+  - name: Install nginx
+    apt:
+      name: nginx
+      state: present
+    when: ansible_facts["distribution"] == "Ubuntu"
+
+  - name: restart nginx
+    tags: one
+    sysvinit:
+      name: nginx
+      state: restarted
+    when: ansible_facts["distribution"] == "Ubuntu"
+  
+  - name: Install httpd
+    package:
+      name: httpd
+      state: present
+    when: ansible_facts["distribution"] == "CentOS"
+
+  - name: restart httpd
+    sysvinit:
+      name: httpd
+      state: restarted
+    when: ansible_facts["distribution"] == "CentOS"

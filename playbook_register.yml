@@ -1,0 +1,13 @@
+- name: my_play
+  hosts: all
+  tasks:
+
+  - name: regsiter_myresult
+    command: cat /var/www/html/index.html
+    register: my_result
+
+
+  - name: debug
+    debug:
+     var: my_result
+    when: my_result.changed == true
